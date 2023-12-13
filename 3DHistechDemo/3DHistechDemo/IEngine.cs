@@ -8,5 +8,10 @@ namespace _3DHistechDemo
 {
     public interface IEngine
     {
+        double GetPostion();
+        bool MoveTo(double coordinate);
+        bool GoHome();
+        double GetSpeed();
+        void SetSpeed(double speed);
     }
 }
