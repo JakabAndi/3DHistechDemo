@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Global;
 
 namespace _3DHistechDemo
 {
@@ -10,7 +11,12 @@ namespace _3DHistechDemo
     {
         private double position = 0;
         private double speed = 0;
+        private AxisEnum axis;
 
+        public Engine(AxisEnum axisEnum)
+        {
+            axis = axisEnum;
+        }
         public double Speed
         {
             get { return speed; }
@@ -22,6 +28,8 @@ namespace _3DHistechDemo
             get { return position; }
             private set { position = value; }
         }
+
+        public AxisEnum Axis => axis;
 
         public double GetPostion() => Position;
 

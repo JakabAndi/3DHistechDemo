@@ -9,6 +9,7 @@ namespace _3DHistechDemo
     public interface IEngine
     {
         double GetPostion();
+        AxisEnum Axis { get; }
         bool MoveTo(double coordinate);
         bool GoHome();
         double GetSpeed();

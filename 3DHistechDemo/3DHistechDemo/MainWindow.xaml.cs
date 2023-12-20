@@ -18,12 +18,12 @@ namespace _3DHistechDemo
     {
         public MainWindow()
         {
-            Engine engineX = new Engine();
-            Engine engineY = new Engine();
-            Engine engineZ = new Engine();
-            Table table = new Table();
+            Engine engineX = new Engine(AxisEnum.X);
+            Engine engineY = new Engine(AxisEnum.Y);
+            Engine engineZ = new Engine(AxisEnum.Z);
+            Table table = new Table(100, 100);
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(new List<IEngine>() { engineX, engineY, engineZ }, table);
-
+            
             this.DataContext = mainWindowViewModel;
             InitializeComponent();
         }
