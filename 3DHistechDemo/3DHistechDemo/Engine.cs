@@ -31,32 +31,37 @@ namespace _3DHistechDemo
 
         public AxisEnum Axis => axis;
 
-        public double GetPostion() => Position;
+        public double GetEngineStep() => Position;
 
         public double GetSpeed() => Speed;
 
         public bool GoHome()
         {
-            return MoveTo(0);
+            return MoveTo(0, 0);
         }
 
-        public bool MoveTo(double coordinate)
+        public bool MoveTo(double engineStep, double scale)
         {
-            if (coordinate >= 0)
-            {
-                while (Position != coordinate)
-                {
-                    if (coordinate > Position)
-                    {
-                        Position = coordinate - Position > Speed ? Position + Speed : coordinate; 
-                    }
-                    else 
-                    {
-                        Position = Position - coordinate > Speed ? Position - Speed : coordinate;
-                    }
-                }
-            }
-            return Position == coordinate;
+            var percent = engineStep / scale;
+
+            Position = percent;
+
+            return true;
+            //if (coordinate >= 0)
+            //{
+            //    while (Position != coordinate)
+            //    {
+            //        if (coordinate > Position)
+            //        {
+            //            Position = coordinate - Position > Speed ? Position + Speed : coordinate; 
+            //        }
+            //        else 
+            //        {
+            //            Position = Position - coordinate > Speed ? Position - Speed : coordinate;
+            //        }
+            //    }
+            //}
+            //return Position == coordinate;
         }
 
         public void SetSpeed(double speed)

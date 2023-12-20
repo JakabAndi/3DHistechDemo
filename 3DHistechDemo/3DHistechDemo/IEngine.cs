@@ -8,9 +8,9 @@ namespace _3DHistechDemo
 {
     public interface IEngine
     {
-        double GetPostion();
+        double GetEngineStep();
         AxisEnum Axis { get; }
-        bool MoveTo(double coordinate);
+        bool MoveTo(double engineStep, double scale);
         bool GoHome();
         double GetSpeed();
         void SetSpeed(double speed);

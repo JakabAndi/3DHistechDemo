@@ -22,8 +22,6 @@ namespace _3DHistechDemo
     {
         private List<IEngine> engineList;
         private ITable myTable;
-        private double tableXCoordinate = 0;
-        private double tableYCoordinate = 0;
         private double tableSpeed = 1;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -42,7 +40,7 @@ namespace _3DHistechDemo
 
             foreach (var engine in engineList) 
             {
-                Axis.Add(engine.Axis.ToString() + " " + engine.GetPostion().ToString() + "%");
+                Axis.Add(engine.Axis.ToString() + " " + engine.GetEngineStep().ToString("F2") + "%");
             }
 
         }
@@ -83,7 +81,7 @@ namespace _3DHistechDemo
                 
         public Coordinate TableCenter
         {
-            get => new Coordinate(myTable.GetPosition().X + myTable.GetTableSize().Width / 2, myTable.GetPosition().Y + myTable.GetTableSize().Height / 2, 0);
+            get => myTable.GetPosition();
         }
 
         public double TableSpeed 
@@ -99,32 +97,71 @@ namespace _3DHistechDemo
             }
         }
 
+        public double TableWidth => myTable.GetTableSize().Width;
+        public double TableHeight => myTable.GetTableSize().Height;
+        public double CanvasWidth = 500;
+        public double CanvasHeight = 500;
+
         private System.Windows.Point tableCoordinate = new System.Windows.Point(0,0);
         public System.Windows.Point TableCoordinateOnUI 
         {
             get { return tableCoordinate; }
             private set 
             {
-                tableCoordinate = value;
+                var limitedValue = CheckValue(value);
+                //tableCoordinate = value;
                 
-                Coordinate calucaltedCoordinate = new Coordinate(tableCoordinate.X + myTable.GetTableSize().Width / 2, tableCoordinate.Y + myTable.GetTableSize().Height / 2, myTable.GetPosition().Z);
+                //Coordinate calucaltedCoordinate = new Coordinate(tableCoordinate.X + myTable.GetTableSize().Width / 2, tableCoordinate.Y + myTable.GetTableSize().Height / 2, myTable.GetPosition().Z);
                 foreach (var item in engineList)
                 {
-                    //if (item.Axis == AxisEnum.X)
-                    //{
-                    //    item.MoveTo(calucaltedCoordinate.X);
-                    //}
-                    //if (item.Axis == AxisEnum.Y)
-                    //{
-                    //    item.MoveTo(calucaltedCoordinate.Y);
-                    //}
+                    if (item.Axis == AxisEnum.X)
+                    {
+                        item.MoveTo(limitedValue.X, CanvasWidth);
+                    }
+                    if (item.Axis == AxisEnum.Y)
+                    {
+                        item.MoveTo(limitedValue.Y, CanvasHeight);
+                    }
                 }
 
-                myTable.MoveTo(calucaltedCoordinate);
+                tableCoordinate.X = limitedValue.X - TableWidth / 2;
+                tableCoordinate.Y = limitedValue.Y - TableHeight / 2;                
+
+                myTable.MoveTo(new Coordinate(limitedValue.X, limitedValue.Y, myTable.GetPosition().Z));
+
+                Axis.Clear();
+                foreach (var engine in engineList)
+                {
+                    Axis.Add(engine.Axis.ToString() + " " + engine.GetEngineStep().ToString("F2") + "%");
+                }
                 OnPropertyChanged(nameof(TablePosition));
+                OnPropertyChanged(nameof(Axis));
+                OnPropertyChanged();
             }
         }
 
+        private System.Windows.Point CheckValue(System.Windows.Point value)
+        {
+            System.Windows.Point tempPoint = value;
+            if (value.X < TableWidth / 2)
+            { 
+                tempPoint.X = TableWidth / 2;
+            }
+            if (value.Y < TableHeight / 2)
+            { 
+                tempPoint.Y = TableHeight / 2;
+            }
+            if (value.X > CanvasWidth - TableWidth / 2)
+            {
+                tempPoint.X = CanvasWidth - TableWidth / 2;
+            }
+            if (value.Y > CanvasHeight - TableHeight / 2)
+            { 
+                tempPoint.Y = CanvasHeight - TableHeight / 2;
+            }
+
+            return tempPoint;
+        }
     }
 
     public class MyCanvas : INotifyPropertyChanged
