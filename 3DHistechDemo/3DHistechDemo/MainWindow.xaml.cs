@@ -18,8 +18,13 @@ namespace _3DHistechDemo
     {
         public MainWindow()
         {
-            //MainWindowViewModel viewModel = new MainWindowViewModel();
-            //this.DataContext = viewModel;
+            Engine engineX = new Engine();
+            Engine engineY = new Engine();
+            Engine engineZ = new Engine();
+            Table table = new Table();
+            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(new List<IEngine>() { engineX, engineY, engineZ }, table);
+
+            this.DataContext = mainWindowViewModel;
             InitializeComponent();
         }
     }

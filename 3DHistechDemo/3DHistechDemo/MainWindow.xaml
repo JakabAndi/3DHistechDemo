@@ -4,33 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DHistechDemo"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:cmd="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="0,0,0,20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <ListView Name="UserGrid" Grid.Row="1" Margin="4,178,12,13" ItemsSource="{Binding Users}">
-            <ListView.View>
-                <GridView x:Name="grdTest">
-                    <GridViewColumn Header="UserId" DisplayMemberBinding="{Binding UserId}" Width="50"/>
-                    <GridViewColumn Header="First Name" DisplayMemberBinding="{Binding FirstName}" Width="80"/>
-                    <GridViewColumn Header="Last Name" DisplayMemberBinding="{Binding LastName}" Width="100"/>
-                    <GridViewColumn Header="City" DisplayMemberBinding="{Binding City}" Width="80"/>
-                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" Width="80"/>
-                    <GridViewColumn Header="Country" DisplayMemberBinding="{Binding Country}" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <!-- Textboxes and labels for user details -->
-        <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" Name="txtUserId" VerticalAlignment="Top" Width="178" Text="{Binding ElementName=UserGrid, Path=SelectedItem.UserId}"/>
-        <!-- Other TextBoxes and Labels for User details -->
-        <Button Content="Update" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="310,40,0,0" Name="btnUpdate" VerticalAlignment="Top" Width="141" Command="{Binding Path=UpdateCommad}" />
-        <!-- Textboxes and labels for user's City, State, and Country -->
-        <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,143,0,0" Name="txtCity" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.City, ElementName=UserGrid}"/>
-        <!-- Labels for Country, City, State -->
-        <!-- Textboxes and labels for Country, City, State -->
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="canvas" Grid.Column="1" Width="1000" Height="1000" Background="Gray" local:MainWindowViewModel.Reference="True">
+            <Canvas.Triggers>
+                <EventTrigger RoutedEvent="MouseUp">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="MyRectangle"
+                                     Storyboard.TargetProperty="(Canvas.Left)"
+                                     To="{Binding MyCanvas.ClickedPoint.X}" Duration="0:0:2"/>
+                            <DoubleAnimation Storyboard.TargetName="MyRectangle"
+                                    Storyboard.TargetProperty="(Canvas.Top)"
+                                    To="{Binding MyCanvas.ClickedPoint.Y}" Duration="0:0:2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Canvas.Triggers>
+            <Rectangle
+                Name="MyRectangle"                
+                Width="100" Height="100" 
+                Fill="DarkGreen" Stroke="Black" 
+                Canvas.Left="{Binding Coordinate.X}" Canvas.Top="{Binding Coordinate.Y}" >
+            </Rectangle>
+        </Canvas>
     </Grid>
 </Window>
