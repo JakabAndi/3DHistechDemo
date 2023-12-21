@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Global;
+﻿using Global;
 
 namespace _3DHistechDemo
 {
-    internal class Engine : IEngine
+    public class Engine : IEngine
     {
         private double position = 0;
         private double speed = 0;

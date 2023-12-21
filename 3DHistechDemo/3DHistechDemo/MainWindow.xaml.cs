@@ -24,8 +24,8 @@ namespace _3DHistechDemo
             Engine engineZ = new Engine(AxisEnum.Z);
             Table table = new Table(100, 100);
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(new List<IEngine>() { engineX, engineY, engineZ }, table);
-            
-            this.DataContext = mainWindowViewModel;
+
+            DataContext = mainWindowViewModel;
             InitializeComponent();
         }
     }

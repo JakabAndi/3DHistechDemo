@@ -1,14 +1,8 @@
 ﻿using Global;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace _3DHistechDemo
 {
-    internal class Table : ITable
+    public class Table : ITable
     {
         private Coordinate position;
         private TableSize tableSize = new TableSize();

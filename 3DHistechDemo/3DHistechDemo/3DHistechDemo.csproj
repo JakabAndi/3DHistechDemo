@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Global\Global.csproj" />
+    <ProjectReference Include="..\Hardware\Hardware.csproj" />
   </ItemGroup>
 
   <ItemGroup>
