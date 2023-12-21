@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Global;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace _3DHistechDemo
         double GetEngineStep();
         AxisEnum Axis { get; }
         bool MoveTo(double engineStep, double scale);
-        bool GoHome();
+        bool MakeStep(bool direction);
         double GetSpeed();
         void SetSpeed(double speed);
     }

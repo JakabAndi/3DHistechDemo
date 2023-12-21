@@ -10,12 +10,14 @@ namespace _3DHistechDemo
 {
     internal class Table : ITable
     {
-        private Coordinate position = new Coordinate(0,0,0);
+        private Coordinate position;
         private TableSize tableSize = new TableSize();
         public Table(double width, double height) 
         {
             tableSize.Width = width;
             tableSize.Height = height;
+
+            position = new Coordinate(tableSize.Width / 2, tableSize.Height / 2, 0);
         }
 
         public Coordinate GetPosition() => position;

@@ -4,16 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DHistechDemo"
+        xmlns:global="clr-namespace:Global;assembly=Global"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:cmd="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="560" Width="738">
     <Grid >
         <Grid.Resources>
             <Style x:Key="LeftButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Grid  Width="30" Height="36">
+                            <Grid Width="30" Height="36">
                                 <Image Source="Resource/LeftArrow.png" Stretch="Fill"/>
                             </Grid>
                         </ControlTemplate>
@@ -36,9 +37,10 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="{Binding CanvasWidth}"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -56,28 +58,37 @@
                 <TextBox Grid.Column="1" Text="{Binding TableSpeed, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
-            <ListBox Grid.Row="2" ItemsSource="{Binding Axis}" Margin="10">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="2" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" IsEnabled="{Binding XAxisEnable}" Orientation="Horizontal">
+                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+                    <TextBlock Text="{Binding XAxisPos}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+                </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <Button Grid.Column="0" Style="{StaticResource LeftButtonStyle}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding}" VerticalAlignment="Center"/>
-                                <Button Grid.Column="2" Style="{StaticResource RightButtonStyle}"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <StackPanel Grid.Row="1" IsEnabled="{Binding YAxisEnable}" Orientation="Horizontal">
+                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                    <TextBlock Text="{Binding YAxisPos}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                </StackPanel>
 
+                <StackPanel Grid.Row="2" IsEnabled="{Binding ZAxisEnable}" Orientation="Horizontal">
+                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                    <TextBlock Text="{Binding ZAxisPos}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="3"/>
         </Grid>
-        <Canvas x:Name="canvas" Grid.Column="1" Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" Background="SandyBrown" local:MainWindowViewModel.Reference="True">
+        <Border Grid.Column="1" Margin="10" BorderThickness="2"
+    BorderBrush="Black"
+    Background="LightGray">
+        <Canvas x:Name="canvas" Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" Background="SandyBrown" local:MainWindowViewModel.Reference="True">
             <Canvas.Triggers>
                 <EventTrigger RoutedEvent="MouseUp">
                     <BeginStoryboard>
@@ -99,5 +110,6 @@
                 Canvas.Left="{Binding TableCoordinateOnUI.X}" Canvas.Top="{Binding TableCoordinateOnUI.Y}" >
             </Rectangle>
         </Canvas>
+        </Border>
     </Grid>    
 </Window>

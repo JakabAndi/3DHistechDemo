@@ -35,17 +35,24 @@ namespace _3DHistechDemo
 
         public double GetSpeed() => Speed;
 
-        public bool GoHome()
+        public bool MakeStep(bool direction)
         {
-            return MoveTo(0, 0);
+            var temp = direction ? Position + 10 : Position - 10;
+            if (temp > 0 && temp < 100)
+            {
+                Position = temp;
+            }
+            return true;
         }
 
         public bool MoveTo(double engineStep, double scale)
         {
-            var percent = engineStep / scale;
+            if (engineStep != 0)
+            {
+                var percent = engineStep / scale;
 
-            Position = percent;
-
+                Position = percent * 100;
+            }
             return true;
             //if (coordinate >= 0)
             //{

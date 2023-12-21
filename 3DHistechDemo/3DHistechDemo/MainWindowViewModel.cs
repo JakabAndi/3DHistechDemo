@@ -35,14 +35,21 @@ namespace _3DHistechDemo
         {
             engineList = engines;
             myTable = table;
-            Axis = new ObservableCollection<string>();
-            
+            Axis = new ObservableCollection<string>();            
 
             foreach (var engine in engineList) 
-            {
+            {                
+                if (engine.Axis == AxisEnum.X)
+                {
+                    engine.MoveTo(TableWidth/2, CanvasWidth);
+                }
+                if (engine.Axis == AxisEnum.Y)
+                {
+                    engine.MoveTo(TableHeight/2, CanvasHeight);
+                }
                 Axis.Add(engine.Axis.ToString() + " " + engine.GetEngineStep().ToString("F2") + "%");
             }
-
+          
         }
 
         private void HandlePointChanged(object? sender, PointEventArgs e)
@@ -52,6 +59,13 @@ namespace _3DHistechDemo
                 TableCoordinateOnUI = e.Point;
             }
         }
+
+        public bool XAxisEnable => engineList.Count > 0;
+        public string XAxisPos => XAxisEnable ? engineList[0].Axis.ToString() + " " + engineList[0].GetEngineStep().ToString("F2") + "%" : string.Empty;
+        public bool YAxisEnable => engineList.Count > 1;
+        public string YAxisPos => YAxisEnable ? engineList[1].Axis.ToString() + " " + engineList[1].GetEngineStep().ToString("F2") + "%" : string.Empty;
+        public bool ZAxisEnable => engineList.Count > 2;
+        public string ZAxisPos => ZAxisEnable ? engineList[2].Axis.ToString() + " " + engineList[2].GetEngineStep().ToString("F2") + "%" : string.Empty;
 
         public ObservableCollection<string> Axis { get; set; }
 
@@ -84,6 +98,7 @@ namespace _3DHistechDemo
             get => myTable.GetPosition();
         }
 
+
         public double TableSpeed 
         {
             get => tableSpeed;
@@ -95,6 +110,73 @@ namespace _3DHistechDemo
                     OnPropertyChanged();
                 }
             }
+        }
+        private ICommand leftButtonCommand;
+        public ICommand LeftButtonCommand
+        {
+            get
+            {
+                if (leftButtonCommand == null)
+                    leftButtonCommand = new RelayCommand<AxisEnum>(LeftButtonClick);
+                return leftButtonCommand;
+            }
+        }
+
+        private ICommand rightButtonCommand;
+        public ICommand RightButtonCommand
+        {
+            get
+            {
+                if (rightButtonCommand == null)
+                    rightButtonCommand = new RelayCommand<AxisEnum>(RightButtonClick);
+                return rightButtonCommand;
+            }
+        }
+
+        private void RightButtonClick(AxisEnum axisEnum)
+        {
+            MoveEngine(axisEnum, true);
+        }
+        private void LeftButtonClick(AxisEnum axisEnum)
+        {
+            MoveEngine(axisEnum, false);
+        }
+
+        private void MoveEngine(AxisEnum axisEnum, bool direction)
+        {
+            switch (axisEnum)
+            {
+                case AxisEnum.X:
+                    {
+                        if (XAxisEnable)
+                        {
+                            engineList[0].MakeStep(direction);
+                            TableCenter.X = ConvertBack(engineList[0].GetEngineStep(), CanvasWidth);
+                            OnPropertyChanged(nameof(XAxisPos));
+                        }
+                        break;
+                    }
+                case AxisEnum.Y:
+                    {
+                        if (YAxisEnable)
+                        {
+                            engineList[1].MakeStep(direction);
+                            TableCenter.Y = ConvertBack(engineList[1].GetEngineStep(), CanvasHeight);
+                            OnPropertyChanged(nameof(YAxisPos));
+                        }
+                        break;
+                    }
+                case AxisEnum.Z:
+                    {
+                        if (ZAxisEnable)
+                        {
+                            engineList[2].MakeStep(direction);
+                            OnPropertyChanged(nameof(ZAxisPos));
+                        }
+                        break;
+                    }
+            }
+            OnPropertyChanged(nameof(TablePosition));
         }
 
         public double TableWidth => myTable.GetTableSize().Width;
@@ -135,11 +217,17 @@ namespace _3DHistechDemo
                     Axis.Add(engine.Axis.ToString() + " " + engine.GetEngineStep().ToString("F2") + "%");
                 }
                 OnPropertyChanged(nameof(TablePosition));
-                OnPropertyChanged(nameof(Axis));
+                OnPropertyChanged(nameof(XAxisPos));
+                OnPropertyChanged(nameof(YAxisPos));
+                OnPropertyChanged(nameof(ZAxisPos));
                 OnPropertyChanged();
             }
         }
 
+        private double ConvertBack(double value, double scale)
+        {
+            return value / 100 * scale;        
+        }
         private System.Windows.Point CheckValue(System.Windows.Point value)
         {
             System.Windows.Point tempPoint = value;
