@@ -5,11 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DHistechDemo"
         xmlns:global="clr-namespace:Global;assembly=Global"
+        xmlns:ei = "http://schemas.microsoft.com/expression/2010/interactions" 
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:cmd="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="MainWindow" Height="560" Width="738">
     <Grid >
         <Grid.Resources>
+            <Storyboard x:Key="StoryBoard">
+                <DoubleAnimation Storyboard.Target="{Binding ElementName=MyRectangle}"
+                 Storyboard.TargetProperty="(Canvas.Left)"
+                 To="{Binding TableCoordinateOnUI.X}"  SpeedRatio="{Binding TableSpeed}"/>
+                <DoubleAnimation Storyboard.Target="{Binding ElementName=MyRectangle}"
+                Storyboard.TargetProperty="(Canvas.Top)"
+                To="{Binding TableCoordinateOnUI.Y}" SpeedRatio="{Binding TableSpeed}" />
+            </Storyboard>
+
             <Style x:Key="LeftButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -20,6 +30,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+
             </Style>
             <Style x:Key="RightButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Template">
@@ -33,6 +44,13 @@
                 </Setter>
             </Style>
         </Grid.Resources>
+
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent = "FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard = "{StaticResource StoryBoard}"/>
+            </EventTrigger>
+        </Grid.Triggers>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="{Binding CanvasWidth}"/>
@@ -64,52 +82,108 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <StackPanel Grid.Row="0" IsEnabled="{Binding XAxisEnable}" Orientation="Horizontal">
-                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+                    <Button Style="{StaticResource LeftButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+
                     <TextBlock Text="{Binding XAxisPos}" VerticalAlignment="Center"/>
-                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+
+                    <Button Style="{StaticResource RightButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.X}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" IsEnabled="{Binding YAxisEnable}" Orientation="Horizontal">
-                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                    <Button Style="{StaticResource LeftButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                     <TextBlock Text="{Binding YAxisPos}" VerticalAlignment="Center"/>
-                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                    <Button Style="{StaticResource RightButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Y}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" IsEnabled="{Binding ZAxisEnable}" Orientation="Horizontal">
-                    <Button Style="{StaticResource LeftButtonStyle}" Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                    <Button Style="{StaticResource LeftButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding LeftButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                     <TextBlock Text="{Binding ZAxisPos}" VerticalAlignment="Center"/>
-                    <Button Style="{StaticResource RightButtonStyle}" Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                    <Button Style="{StaticResource RightButtonStyle}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseDown">
+                                <i:InvokeCommandAction Command="{Binding RightButtonCommand}" CommandParameter="{x:Static global:AxisEnum.Z}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName = "PreviewMouseUp">
+                                <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                                    Storyboard = "{StaticResource StoryBoard}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="0" Grid.Row="3"/>
         </Grid>
         <Border Grid.Column="1" Margin="10" BorderThickness="2"
-    BorderBrush="Black"
-    Background="LightGray">
-        <Canvas x:Name="canvas" Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" Background="SandyBrown" local:MainWindowViewModel.Reference="True">
-            <Canvas.Triggers>
-                <EventTrigger RoutedEvent="MouseUp">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="MyRectangle"
-                                     Storyboard.TargetProperty="(Canvas.Left)"
-                                     To="{Binding TableCoordinateOnUI.X}"  SpeedRatio="{Binding TableSpeed}"/>
-                            <DoubleAnimation Storyboard.TargetName="MyRectangle"
-                                    Storyboard.TargetProperty="(Canvas.Top)"
-                                    To="{Binding TableCoordinateOnUI.Y}" SpeedRatio="{Binding TableSpeed, UpdateSourceTrigger=PropertyChanged}" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Canvas.Triggers>
-            <Rectangle
+                BorderBrush="Black"
+                Background="LightGray">
+            <Canvas x:Name="canvas" Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" Background="SandyBrown" local:MainWindowViewModel.Reference="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName = "PreviewMouseUp">
+                        <ei:ControlStoryboardAction ControlStoryboardOption = "Play"
+                            Storyboard = "{StaticResource StoryBoard}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <Rectangle
                 Name="MyRectangle"                
                 Width="{Binding TableWidth}" Height="{Binding TableHeight}" 
                 Fill="LightGray" Stroke="Black"                 
                 Canvas.Left="{Binding TableCoordinateOnUI.X}" Canvas.Top="{Binding TableCoordinateOnUI.Y}" >
-            </Rectangle>
-        </Canvas>
+
+                </Rectangle>
+            </Canvas>
         </Border>
-    </Grid>    
+    </Grid>
 </Window>

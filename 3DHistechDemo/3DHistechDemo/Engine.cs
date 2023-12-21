@@ -38,7 +38,7 @@ namespace _3DHistechDemo
         public bool MakeStep(bool direction)
         {
             var temp = direction ? Position + 10 : Position - 10;
-            if (temp > 0 && temp < 100)
+            if (temp >= 10 && temp <= 90)
             {
                 Position = temp;
             }
@@ -54,21 +54,6 @@ namespace _3DHistechDemo
                 Position = percent * 100;
             }
             return true;
-            //if (coordinate >= 0)
-            //{
-            //    while (Position != coordinate)
-            //    {
-            //        if (coordinate > Position)
-            //        {
-            //            Position = coordinate - Position > Speed ? Position + Speed : coordinate; 
-            //        }
-            //        else 
-            //        {
-            //            Position = Position - coordinate > Speed ? Position - Speed : coordinate;
-            //        }
-            //    }
-            //}
-            //return Position == coordinate;
         }
 
         public void SetSpeed(double speed)

@@ -92,7 +92,10 @@ namespace _3DHistechDemo
             var vm = vp.DataContext as MainWindowViewModel;
             vm.MyCanvas = new MyCanvas() { Canva = vp };
         }
-                
+        public Coordinate Tableee
+        {
+            get => new Coordinate(TableCenter.X -10, TableCenter.Y + 10, 0);
+        }
         public Coordinate TableCenter
         {
             get => myTable.GetPosition();
@@ -144,6 +147,7 @@ namespace _3DHistechDemo
 
         private void MoveEngine(AxisEnum axisEnum, bool direction)
         {
+            Coordinate newTablecoordinates = TableCenter;
             switch (axisEnum)
             {
                 case AxisEnum.X:
@@ -151,8 +155,8 @@ namespace _3DHistechDemo
                         if (XAxisEnable)
                         {
                             engineList[0].MakeStep(direction);
-                            TableCenter.X = ConvertBack(engineList[0].GetEngineStep(), CanvasWidth);
-                            OnPropertyChanged(nameof(XAxisPos));
+                            newTablecoordinates.X = ConvertBack(engineList[0].GetEngineStep(), CanvasWidth);
+                           
                         }
                         break;
                     }
@@ -161,8 +165,8 @@ namespace _3DHistechDemo
                         if (YAxisEnable)
                         {
                             engineList[1].MakeStep(direction);
-                            TableCenter.Y = ConvertBack(engineList[1].GetEngineStep(), CanvasHeight);
-                            OnPropertyChanged(nameof(YAxisPos));
+                            newTablecoordinates.Y = ConvertBack(engineList[1].GetEngineStep(), CanvasHeight);
+                           
                         }
                         break;
                     }
@@ -171,13 +175,28 @@ namespace _3DHistechDemo
                         if (ZAxisEnable)
                         {
                             engineList[2].MakeStep(direction);
-                            OnPropertyChanged(nameof(ZAxisPos));
+                            newTablecoordinates.Z = ConvertBack(engineList[2].GetEngineStep(), 100);                          
                         }
                         break;
                     }
             }
+            myTable.MoveTo(newTablecoordinates);
+            tableCoordinate.X = newTablecoordinates.X - TableWidth / 2;
+            tableCoordinate.Y = newTablecoordinates.Y - TableHeight / 2;
+            OnPropertyChanged(nameof(XAxisPos));
+            OnPropertyChanged(nameof(YAxisPos));
+            OnPropertyChanged(nameof(ZAxisPos));
+            OnPropertyChanged(nameof(TableCoordinateOnUI));
+
+            OnPropertyChanged(nameof(TableCenter));
             OnPropertyChanged(nameof(TablePosition));
+
+            //myCanvas.Canva.Children[0].UpdateLayout();
+            //myCanvas.Canva.Children[0].InvalidateVisual();
+            //StartingAnimation = true;
         }
+
+        public bool StartingAnimation = false;
 
         public double TableWidth => myTable.GetTableSize().Width;
         public double TableHeight => myTable.GetTableSize().Height;
@@ -220,6 +239,7 @@ namespace _3DHistechDemo
                 OnPropertyChanged(nameof(XAxisPos));
                 OnPropertyChanged(nameof(YAxisPos));
                 OnPropertyChanged(nameof(ZAxisPos));
+
                 OnPropertyChanged();
             }
         }

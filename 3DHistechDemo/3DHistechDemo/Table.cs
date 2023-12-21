@@ -26,9 +26,18 @@ namespace _3DHistechDemo
 
         public void MoveTo(Coordinate pos)
         {
-            position.X = pos.X;
-            position.Y = pos.Y;
-            position.Z = pos.Z;
+            if (pos.X >= tableSize.Width / 2)
+            {
+                position.X = pos.X;
+            }
+            if (pos.Y >= tableSize.Height / 2)
+            {
+                position.Y = pos.Y;
+            }
+            if (pos.Z >= 0)
+            {
+                position.Z = pos.Z;
+            }
         }
     }
 }
